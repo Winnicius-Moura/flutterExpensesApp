@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 main() => runApp(const ExpensesApp());
@@ -19,8 +18,24 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Versão inicial'),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Despesas Pessoais'),
+        ),
+        body: Column(
+          children: const <Widget>[
+            SizedBox(
+              width: double.infinity,
+              child: Card(
+                color: Colors.blue,
+                elevation: 5,
+                child: Text('Gráfico'),
+              ),
+            ),
+            Card(
+              child: Text('Lista de Transações'),
+            )
+          ],
+        ));
   }
 }
