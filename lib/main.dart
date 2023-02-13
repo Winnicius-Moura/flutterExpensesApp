@@ -15,10 +15,14 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  
   final transctions = [
-    Transaction(id: 't1', title: 'Tennis Academia', value: 298.99, date: DateTime.now()),
-    Transaction(id: 't2', title: 'Gasolina', value: 179.99, date: DateTime.now()),
+    Transaction(
+        id: 't1',
+        title: 'Tennis Academia',
+        value: 298.99,
+        date: DateTime.now()),
+    Transaction(
+        id: 't2', title: 'Gasolina', value: 179.99, date: DateTime.now()),
   ];
 
   MyHomePage({super.key});
@@ -30,8 +34,8 @@ class MyHomePage extends StatelessWidget {
           title: const Text('Despesas Pessoais'),
         ),
         body: Column(
-          children: const <Widget>[
-            SizedBox(
+          children: <Widget>[
+            const SizedBox(
               width: double.infinity,
               child: Card(
                 color: Colors.blue,
@@ -39,8 +43,47 @@ class MyHomePage extends StatelessWidget {
                 child: Text('Gráfico'),
               ),
             ),
-            Card(
-              child: Text('Lista de Transações'),
+            Column(
+              children: transctions.map((transaction) {
+                return Card(
+                  child: Row(children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                        color: Colors.deepPurple,
+                        width: 2,
+                      )),
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        transaction.value.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.deepPurple,
+                        ),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          transaction.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          transaction.date.toString(),
+                          style: const TextStyle(color: Colors.black54),
+                        )
+                      ],
+                    )
+                  ]),
+                );
+              }).toList(),
             )
           ],
         ));
