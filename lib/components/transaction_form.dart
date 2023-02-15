@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 
-class TransactionForm extends StatelessWidget {
-  final titleController = TextEditingController();
-  final valueController = TextEditingController();
+class TransactionForm extends StatefulWidget {
 
   final void Function(String, double) onSubmit;
 
-  TransactionForm({super.key, required this.onSubmit});
+  const TransactionForm({super.key, required this.onSubmit});
+
+  @override
+  State<TransactionForm> createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
+  final titleController = TextEditingController();
+
+  final valueController = TextEditingController();
+
+  submitForm() {
+    final title = titleController.text;
+    final value = double.tryParse(valueController.text) ?? 0.0;
+
+    if(title.isEmpty || value <= 0){
+      return;
+    }
+    widget.onSubmit(title, value);              
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +34,15 @@ class TransactionForm extends StatelessWidget {
         child: Column(children: [
           TextField(
             controller: titleController,
+            onSubmitted: (_) => submitForm(),
             decoration: const InputDecoration(
               labelText: 'Título',
             ),
           ),
           TextField(
             controller: valueController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            onSubmitted: (_) => submitForm(),
             decoration: const InputDecoration(
               labelText: 'Valor R\$',
             ),
@@ -31,11 +51,7 @@ class TransactionForm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    final title = titleController.text;
-                    final value = double.tryParse(valueController.text) ?? 0.0;
-                    onSubmit(title, value);
-                  },
+                  onPressed: submitForm,
                   child: const Text('Nova Transação')),
             ],
           )
