@@ -11,8 +11,34 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
+
+    final ThemeData tema = ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: Colors.lightBlue[800],
+      fontFamily: 'Inter',
+    );
+
+    return MaterialApp(
+      home: const MyHomePage(),
+      theme: tema.copyWith(
+        colorScheme: tema.colorScheme.copyWith(
+          primary: Colors.deepPurple,
+          secondary: Colors.amber,
+        ),
+        textTheme: tema.textTheme.copyWith(
+          headline6: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          )
+        )
+      ),  
     );
   }
 }
