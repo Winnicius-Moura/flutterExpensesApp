@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'components/transaction_list.dart';
@@ -11,7 +12,6 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final ThemeData tema = ThemeData(
       brightness: Brightness.dark,
       primaryColor: Colors.lightBlue[800],
@@ -21,24 +21,22 @@ class ExpensesApp extends StatelessWidget {
     return MaterialApp(
       home: const MyHomePage(),
       theme: tema.copyWith(
-        colorScheme: tema.colorScheme.copyWith(
-          primary: Colors.deepPurple,
-          secondary: Colors.amber,
-        ),
-        textTheme: tema.textTheme.copyWith(
-          headline6: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+          colorScheme: tema.colorScheme.copyWith(
+            primary: Colors.lightBlue,
+            secondary: Colors.amber,
           ),
-        ),
-        appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(
+          textTheme: tema.textTheme.copyWith(
+            headline6: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          appBarTheme: const AppBarTheme(
+              titleTextStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-          )
-        )
-      ),  
+          ))),
     );
   }
 }
@@ -56,10 +54,25 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 't1',
         title: 'Tennis Academia',
         value: 298.99,
-        date: DateTime.now()),
+        date: DateTime.now().subtract(const Duration(days: 3))),
     Transaction(
-        id: 't2', title: 'Gasolina', value: 179.99, date: DateTime.now()),
+        id: 't2',
+        title: 'Gasolina',
+        value: 179.99,
+        date: DateTime.now().subtract(const Duration(days: 4))),
   ];
+
+  List<Transaction> get recentTransactions {
+    return transactions
+        .where(
+          (transaction) => transaction.date.isAfter(
+            DateTime.now().subtract(
+              const Duration(days: 7),
+            ),
+          ),
+        )
+        .toList();
+  }
 
   addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -91,21 +104,14 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Despesas Pessoais'),
         actions: <Widget>[
           IconButton(
-              onPressed: () => openTransactionFormModal(context), 
+              onPressed: () => openTransactionFormModal(context),
               icon: const Icon(Icons.add))
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const SizedBox(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                elevation: 5,
-                child: Text('Gráfico'),
-              ),
-            ),
+            Chart(recentTransactions: recentTransactions),
             TransactionList(transactions: transactions),
           ],
         ),
