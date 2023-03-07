@@ -1,3 +1,4 @@
+import 'package:expenses/components/chart_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
@@ -43,8 +44,11 @@ class Chart extends StatelessWidget {
       margin: const EdgeInsets.all(20),
       child: Row(
         children: groupedTransactions
-            .map((tr) => Text('${tr['day']}'
-                '${tr['value']}'))
+            .map((tr) => ChartBar(
+                  label: tr['day'].toString(),
+                  value: tr['value'] as double,
+                  percentega: 0,
+                ))
             .toList(),
       ),
     );
